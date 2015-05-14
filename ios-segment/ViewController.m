@@ -13,6 +13,9 @@
 @end
 
 #define imgWH 40
+#define marTop 80
+#define topSpan 10
+#define imgLen 18
 @implementation ViewController
 
 - (void)viewDidLoad {
@@ -28,7 +31,9 @@
 
 - (IBAction)segment_select:(UISegmentedControl *)sender {
 
-    NSLog(@"你选择的是：%li",(long)[sender selectedSegmentIndex]);
+    int count = (int)sender.selectedSegmentIndex + 2;
+    
+    [self segmentSort:count];
 }
 
 -(void)segmentSort : (int)colCount
@@ -36,18 +41,30 @@
     //间隔计算
     CGFloat margin = (self.view.bounds.size.width - (imgWH * colCount)) / (colCount + 1);
     
-    
     //其中i是要输出的个数
-    for (int i = 0; i < 18; i++)
+    for (int i = 0; i < imgLen; i++)
     {
         //计算x,y
         float x = (i % colCount * (imgWH + margin)) + margin;
-        float y = (i / colCount * (imgWH+10)) + 80;
+        float y = (i / colCount * (imgWH + topSpan)) + marTop;
         
-        NSLog(@">>> %i",(i / colCount));
+        long subCount = self.view.subviews.count;
+        NSLog(@"count:%li",subCount);
         
-        
-        [self addImg:[NSString stringWithFormat:@"%i",i] :x :y];
+        if(subCount != imgLen)
+        {
+            [self addImg:[NSString stringWithFormat:@"%i",i] :x :y];
+            NSLog(@"nslog %@",self.view.subviews[i]);
+        }
+        else
+        {
+            NSLog(@"come on...");
+            //非第一次创建
+            UIImageView *uiv = self.view.subviews[i];
+            CGRect oldRect = uiv.frame;
+            oldRect.origin = CGPointMake(x, y);
+            uiv.frame = oldRect;
+        }
     }
 }
 
