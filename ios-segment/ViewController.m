@@ -38,6 +38,10 @@
 
 -(void)segmentSort : (int)colCount : (BOOL) b
 {
+    //设置动画
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:.5];
+    
     //间隔计算
     CGFloat margin = (self.view.bounds.size.width - (imgWH * colCount)) / (colCount + 1);
     
@@ -68,6 +72,8 @@
             }
         }
     }
+    
+    [UIView commitAnimations];
 }
 
 #pragma mark - 生成图片方法
