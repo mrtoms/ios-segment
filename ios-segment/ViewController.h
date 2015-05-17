@@ -12,7 +12,7 @@
 
 - (IBAction)segment_select:(UISegmentedControl *)sender;
 
--(void)segmentSort : (int)colCount;
+-(void)segmentSort : (int)colCount : (BOOL) b;
 
 -(void)addImg : (NSString*) name : (float)x : (float)y;
 @end

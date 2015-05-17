@@ -15,13 +15,13 @@
 #define imgWH 40
 #define marTop 80
 #define topSpan 10
-#define imgLen 18
+#define imgLen 16
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self segmentSort:2];
+    [self segmentSort:2:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,10 +33,10 @@
 
     int count = (int)sender.selectedSegmentIndex + 2;
     
-    [self segmentSort:count];
+    [self segmentSort:count :NO];
 }
 
--(void)segmentSort : (int)colCount
+-(void)segmentSort : (int)colCount : (BOOL) b
 {
     //间隔计算
     CGFloat margin = (self.view.bounds.size.width - (imgWH * colCount)) / (colCount + 1);
@@ -47,23 +47,25 @@
         //计算x,y
         float x = (i % colCount * (imgWH + margin)) + margin;
         float y = (i / colCount * (imgWH + topSpan)) + marTop;
-        
-        long subCount = self.view.subviews.count;
-        NSLog(@"count:%li",subCount);
-        
-        if(subCount != imgLen)
+
+        if(b)
         {
-            [self addImg:[NSString stringWithFormat:@"%i",i] :x :y];
-            NSLog(@"nslog %@",self.view.subviews[i]);
+            //保存图表都能显示（总个数为：16）
+            int no = i % 16;
+            [self addImg:[NSString stringWithFormat:@"%i",no] :x :y];
         }
         else
         {
-            NSLog(@"come on...");
             //非第一次创建
-            UIImageView *uiv = self.view.subviews[i];
-            CGRect oldRect = uiv.frame;
-            oldRect.origin = CGPointMake(x, y);
-            uiv.frame = oldRect;
+            //i+3前面还有三个控件
+            UIImageView *uiv = self.view.subviews[i+3];
+            
+            if(uiv)
+            {
+                CGRect oldRect = uiv.frame;
+                oldRect.origin = CGPointMake(x, y);
+                uiv.frame = oldRect;
+            }
         }
     }
 }
